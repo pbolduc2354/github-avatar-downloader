@@ -2,6 +2,9 @@ var request = require('request');
 var git_token = require('./secret.js')
 var fs = require('fs');
 
+var repoOwner = process.argv[2];
+var repoName = process.argv[3];
+
 
 function getRepoContributors(repoOwner, repoName, cb) {
   var options = {
@@ -39,13 +42,17 @@ function downloadImageByURL(url, filePath) {
 
 
 
-
-getRepoContributors('jquery', 'jquery', function(err, result) {
-  var jsObject = JSON.parse(result);
+getRepoContributors(repoOwner, repoName, function(err, result) {
+  if (!repoOwner || !repoName) {
+    console.log("error")
+  } else {
+    var jsObject = JSON.parse(result);
   for (var user of jsObject) {
     // return user.avatar_url
     // console.log(user.avatar_url)
     downloadImageByURL(user.avatar_url, "./avatars/"+ user.login+'.jpeg')
   }
+  }
+
 });
 
