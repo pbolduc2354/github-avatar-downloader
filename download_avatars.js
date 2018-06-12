@@ -24,35 +24,35 @@ function getRepoContributors(repoOwner, repoName, cb) {
 function downloadImageByURL(url, filePath) {
   request.get(url)
 
-         .on('error', function (err) {
-        throw err;
-       })
+  .on('error', function (err) {
+    throw err;
+  })
 
-       .on('response', function (response) {
-        console.log('Response status code: ', response.statusCode , ' Response message: ', response.statusMessage , ' Response content type: ', response.headers['content-type']);
-       })
+  .on('response', function (response) {
+    console.log('Response status code: ', response.statusCode , ' Response message: ', response.statusMessage , ' Response content type: ', response.headers['content-type']);
+  })
 
-       .on('end', function(){
-        console.log("download complete!");
+  .on('end', function(){
+    console.log("download complete!");
 
-       })
+  })
 
-       .pipe(fs.createWriteStream(filePath));
+  .pipe(fs.createWriteStream(filePath));
 }
 
 
 
 getRepoContributors(repoOwner, repoName, function(err, result) {
   if (!repoOwner || !repoName) {
-    console.log("error")
+    console.log("error");
   } else {
     var jsObject = JSON.parse(result);
-  for (var user of jsObject) {
+    for (var user of jsObject) {
     // return user.avatar_url
     // console.log(user.avatar_url)
-    downloadImageByURL(user.avatar_url, "./avatars/"+ user.login+'.jpeg')
+    downloadImageByURL(user.avatar_url, "./avatars/"+ user.login+'.jpeg');
   }
-  }
+}
 
 });
 
